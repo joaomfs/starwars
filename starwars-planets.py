@@ -1,7 +1,5 @@
 import requests
-from flask import Flask
-from flask import jsonify
-from flask import json, request
+from flask import Flask, jsonify, json, request
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
