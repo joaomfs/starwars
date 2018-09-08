@@ -93,6 +93,19 @@ def update_planet(id):
   output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
   return jsonify({'result': output})
 
+#DELETE PLANET
+@app.route('/planets/<id>', methods=['DELETE'])
+def delete_planet(id):
+  try:
+    p = planets.find_one({'_id': ObjectId(id)})
+  except Exception as ex:
+    return jsonify({'result' : 'Bad Request' , 'keyword': ex.args[0]}), 400
+  if p is None:
+    return jsonify({'result': 'Planet not found'}), 404
+
+  planets.remove(p)
+  return jsonify({'result': 'Deleted'})
+
 def get_filmes(name):
   url = "https://swapi.co/api/planets/?page=1"
   while(url is not None):
