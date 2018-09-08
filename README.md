@@ -4,7 +4,7 @@ Simple REST API designed to store Star Wars planets, written in Python using Fla
 
 ## Running the project
 
-To run this project, first we need to prepare the environment:
+To run this project, first you need to prepare the environment:
 ```
 * virtualenv flask
 * cd flask
