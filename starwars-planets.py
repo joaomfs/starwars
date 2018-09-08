@@ -29,7 +29,70 @@ def add_planet():
   output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
   return jsonify({'result' : output})
 
-#AUX FUNCTION GET FILMS
+#GET ALL PLANETS
+@app.route('/planets', methods=['GET'])
+def get_all_planets():
+  fplanets = planets.find()
+  output =[]
+  for p in fplanets:
+    output.append({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
+
+  return jsonify({'result': output})
+
+#GET PLANET BY NAME
+@app.route('/planets/name/<name>', methods=['GET'])
+def get_planet_by_name(name):
+  p = planets.find_one({'name': name})
+  if p is None:
+    return jsonify({'result': 'Planet not found'}), 404
+  output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
+  return jsonify({'result': output})
+
+#GET PLANET BY ID
+@app.route('/planets/<id>', methods=['GET'])
+def get_planet_by_id(id):
+  try:
+    p = planets.find_one({'_id': ObjectId(id)})
+  except Exception as ex:
+    return jsonify({'result' : 'Bad Request' , 'keyword': ex.args[0]}), 400
+  if p is None:
+    return jsonify({'result': 'Planet not found'}), 404
+  output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
+  return jsonify({'result': output})
+
+#UPDATE PLANET
+@app.route('/planets/<id>', methods=['PUT'])
+def update_planet(id):
+  try:
+    p = planets.find_one({'_id': ObjectId(id)})
+  except Exception as ex:
+    return jsonify({'result' : 'Bad Request' , 'keyword': ex.args[0]}), 400
+  if p is None:
+    return jsonify({'result': 'Planet not found'}), 404    
+
+  try:
+    name = request.json['name']
+    p['name'] = name
+  except Exception:
+    p['name'] = p['name']
+  try:
+    climate = request.json['climate']
+    p['climate'] = climate
+  except Exception:
+    p['climate'] = p['climate']
+  try:
+    terrain = request.json['terrain']
+    p['terrain'] = terrain
+  except Exception:
+    p['terrain'] = p['terrain']
+
+  films = get_filmes(p['name'])
+  p['films'] = films
+
+  planets.save(p)
+  output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
+  return jsonify({'result': output})
+
 def get_filmes(name):
   url = "https://swapi.co/api/planets/?page=1"
   while(url is not None):
