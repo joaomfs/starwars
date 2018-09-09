@@ -130,4 +130,4 @@ def get_films(name):
   return []
 
 if __name__ == '__main__':
-  app.run(debug=True)
+  app.run()
