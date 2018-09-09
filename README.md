@@ -21,7 +21,7 @@ The planets sent to API must follow the following JSON format:
 ```
 {
     "name": "Cato Neimoidia",
-    "climate": temperate, moist",
+    "climate": "temperate, moist",
     "terrain": "mountains, fields, forests, rock arches"
 }
 ```
@@ -39,16 +39,16 @@ List all planets:
 * GET - http://127.0.0.1:5000/planets
 
 Search a planet by name:
-* GET - http://127.0.0.1:5000/planets/name/{name}
+* GET - http://127.0.0.1:5000/planets?name={name}
 
 Search a planet by id:
-* GET - http://127.0.0.1:5000/planets/{id}
+* GET - http://127.0.0.1:5000/planets?id={id}
 
 Update a planet by id:
-* PUT - http://127.0.0.1:5000/planets/{id}
+* PUT - http://127.0.0.1:5000/planets?id={id}
 
 Remove a planet:
-* DELETE - http://127.0.0.1:5000/planets/{id}
+* DELETE - http://127.0.0.1:5000/planets?id={id}
 
 
 ## Built With

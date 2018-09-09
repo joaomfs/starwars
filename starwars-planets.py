@@ -4,8 +4,8 @@ from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 
 app = Flask(__name__)
-app.config['MONGO_DBNAME'] = 'StarWars'
-app.config['MONGO_URI'] = 'mongodb://localhost:27017/StarWars'
+app.config['MONGO_DBNAME'] = 'starwars'
+app.config['MONGO_URI'] = 'mongodb://localhost:27017/starwars'
 app.config['JSON_SORT_KEYS'] = False
 
 mongo = PyMongo(app)
@@ -19,7 +19,7 @@ def add_planet():
     name = request.json['name']
     climate = request.json['climate']
     terrain = request.json['terrain']
-    films = get_filmes(name)
+    films = get_films(name)
   except Exception as ex:
     return jsonify({'result' : 'Bad Request' , 'keyword': ex.args[0]}), 400
   planet_id = planets.insert({'name': name, 'climate': climate, 'terrain': terrain, 'films': films})
@@ -27,40 +27,26 @@ def add_planet():
   output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
   return jsonify({'result' : output})
 
-#GET ALL PLANETS
+#GET PLANET
 @app.route('/planets', methods=['GET'])
-def get_all_planets():
-  fplanets = planets.find()
-  output =[]
-  for p in fplanets:
-    output.append({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
-
-  return jsonify({'result': output})
-
-#GET PLANET BY NAME
-@app.route('/planets/name/<name>', methods=['GET'])
-def get_planet_by_name(name):
-  p = planets.find_one({'name': name})
-  if p is None:
-    return jsonify({'result': 'Planet not found'}), 404
-  output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
-  return jsonify({'result': output})
-
-#GET PLANET BY ID
-@app.route('/planets/<id>', methods=['GET'])
-def get_planet_by_id(id):
-  try:
+def get_planet():
+  name = request.args.get('name')
+  id = request.args.get('id')
+  if(name is not None):
+    p = planets.find_one({'name': name})
+  elif(id is not None):
     p = planets.find_one({'_id': ObjectId(id)})
-  except Exception as ex:
-    return jsonify({'result' : 'Bad Request' , 'keyword': ex.args[0]}), 400
+  else:
+    return get_all_planets()
   if p is None:
     return jsonify({'result': 'Planet not found'}), 404
   output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
   return jsonify({'result': output})
 
 #UPDATE PLANET
-@app.route('/planets/<id>', methods=['PUT'])
-def update_planet(id):
+@app.route('/planets', methods=['PUT'])
+def update_planet():
+  id = request.args.get('id')
   try:
     p = planets.find_one({'_id': ObjectId(id)})
   except Exception as ex:
@@ -84,7 +70,7 @@ def update_planet(id):
   except Exception:
     p['terrain'] = p['terrain']
 
-  films = get_filmes(p['name'])
+  films = get_films(p['name'])
   p['films'] = films
 
   planets.save(p)
@@ -92,8 +78,9 @@ def update_planet(id):
   return jsonify({'result': output})
 
 #DELETE PLANET
-@app.route('/planets/<id>', methods=['DELETE'])
-def delete_planet(id):
+@app.route('/planets', methods=['DELETE'])
+def delete_planet():
+  id = request.args.get('id')
   try:
     p = planets.find_one({'_id': ObjectId(id)})
   except Exception as ex:
@@ -104,7 +91,17 @@ def delete_planet(id):
   planets.remove(p)
   return jsonify({'result': 'Deleted'})
 
-def get_filmes(name):
+#GET ALL PLANETS
+def get_all_planets():
+  fplanets = planets.find()
+  output =[]
+  for p in fplanets:
+    output.append({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
+
+  return jsonify({'result': output})
+
+#GET FILMS
+def get_films(name):
   url = "https://swapi.co/api/planets/?page=1"
   while(url is not None):
     response = requests.get(url)
