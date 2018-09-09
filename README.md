@@ -4,7 +4,7 @@ Simple REST API designed to store Star Wars planets, written in Python using Fla
 
 ## Running the project
 
-For running this project you need a database called StarWars in a MongoDB server running on port 27017 on localhost.
+For running this project you need a database called starwars in a MongoDB server running on port 27017 on localhost.
 
 Or, you can use de deployed database at MongoDB Atlas changing the app.config['MONGO_URI'] to 'mongodb+srv://skywalker:maytheforcebewithyou@cluster0-z7w6h.mongodb.net/starwars?retryWrites=true'
 
@@ -14,7 +14,6 @@ To run this project, first you need to prepare the environment:
 * python starwars-planets.py
 ```
 
-And create a MongoDB database called 'StarWars'
 ## Using Postman
 
 You can use an tool like [Postman](https://www.getpostman.com/).
