@@ -29,7 +29,7 @@ The planets sent to the API must follow the following JSON format:
 
 To Update you only need to send the fields you want to update.
 
-The API will get the movies apparitions from the named planet, if exists, and will persist in the database.
+The API will get the list of movies the named planet appeared, if exists, and will persist in the database.
 
 You can use the following endpoints with the API:
 
