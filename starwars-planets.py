@@ -37,16 +37,6 @@ def add_planet():
   output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
   return jsonify({'result' : output})
 
-#GET ALL PLANETS
-#@app.route('/planets', methods=['GET'])
-def get_all_planets():
-  fplanets = planets.find()
-  output =[]
-  for p in fplanets:
-    output.append({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
-
-  return jsonify({'result': output})
-
 #GET PLANET BY NAME
 @app.route('/planets', methods=['GET'])
 def get_planet_by_name():
@@ -118,6 +108,16 @@ def delete_planet(id):
 
   planets.remove(p)
   return jsonify({'result': 'Deleted'})
+
+#GET ALL PLANETS
+def get_all_planets():
+  fplanets = planets.find()
+  output =[]
+  for p in fplanets:
+    output.append({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
+
+  return jsonify({'result': output})
+
 
 def get_filmes(name):
   url = "https://swapi.co/api/planets/?page=1"
