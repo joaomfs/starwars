@@ -44,7 +44,6 @@ def get_planet_by_name():
   if(name is None):
     return get_all_planets()
   fplanets = planets.find({'name': name})
-  print(fplanets)
   if planets.count_documents({'name':name})==0:
     return jsonify({'result': 'Planet not found'}), 404
   output =[]
