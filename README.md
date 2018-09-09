@@ -43,13 +43,13 @@ Search a planet by name:
 * GET - http://127.0.0.1:5000/planets?name={name}
 
 Search a planet by id:
-* GET - http://127.0.0.1:5000/planets?id={id}
+* GET - http://127.0.0.1:5000/planets/{id}
 
 Update a planet by id:
-* PUT - http://127.0.0.1:5000/planets?id={id}
+* PUT - http://127.0.0.1:5000/planets/{id}
 
 Remove a planet by id:
-* DELETE - http://127.0.0.1:5000/planets?id={id}
+* DELETE - http://127.0.0.1:5000/planets/{id}
 
 
 ## Built With
