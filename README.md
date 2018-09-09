@@ -6,6 +6,8 @@ Simple REST API designed to store Star Wars planets, written in Python using Fla
 
 For running this project you need a database called StarWars in a MongoDB server running on port 27017 on localhost.
 
+Or, you can use de deployed database at MongoDB Atlas changing the app.config['MONGO_URI'] to 'mongodb+srv://skywalker:maytheforcebewithyou@cluster0-z7w6h.mongodb.net/starwars?retryWrites=true'
+
 To run this project, first you need to prepare the environment:
 ```
 * pip install -r requirements.txt
@@ -47,7 +49,7 @@ Search a planet by id:
 Update a planet by id:
 * PUT - http://127.0.0.1:5000/planets?id={id}
 
-Remove a planet:
+Remove a planet by id:
 * DELETE - http://127.0.0.1:5000/planets?id={id}
 
 

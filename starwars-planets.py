@@ -12,6 +12,16 @@ mongo = PyMongo(app)
 
 planets = mongo.db.planets
 
+@app.route('/', methods=['GET'])
+def help():
+  msg = "Insert a new planet:\n * POST - http://127.0.0.1:5000/planets\n "
+  msg += "List all planets:\n * GET - http://127.0.0.1:5000/planets\n"
+  msg+= "Search a planet by name: \n * GET - http://127.0.0.1:5000/planets?name={name}\n"
+  msg+= "Search a planet by id: \n * GET - http://127.0.0.1:5000/planets?id={id}\n"
+  msg+= "Update a planet by id: \n * PUT - http://127.0.0.1:5000/planets?id={id}\n"
+  msg+= "Remove a planet:\n * DELETE - http://127.0.0.1:5000/planets?id={id}"
+  return msg
+
 #POST PLANET
 @app.route('/planets', methods=['POST'])
 def add_planet():
@@ -47,6 +57,8 @@ def get_planet():
 @app.route('/planets', methods=['PUT'])
 def update_planet():
   id = request.args.get('id')
+  if(id is None):
+    return jsonify({'result' : 'Bad Request' , 'keyword': 'missing id'}), 400
   try:
     p = planets.find_one({'_id': ObjectId(id)})
   except Exception as ex:
@@ -81,6 +93,8 @@ def update_planet():
 @app.route('/planets', methods=['DELETE'])
 def delete_planet():
   id = request.args.get('id')
+  if(id is None):
+    return jsonify({'result' : 'Bad Request' , 'keyword': 'missing id'}), 400
   try:
     p = planets.find_one({'_id': ObjectId(id)})
   except Exception as ex:
