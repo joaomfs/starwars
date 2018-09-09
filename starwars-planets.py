@@ -53,10 +53,12 @@ def get_planet_by_name():
   name = request.args.get('name')
   if(name is None):
     return get_all_planets()
-  p = planets.find_one({'name': name})
-  if p is None:
+  fplanets = planets.find({'name': name})
+  if fplanets is None:
     return jsonify({'result': 'Planet not found'}), 404
-  output = ({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
+  output =[]
+  for p in fplanets:
+    output.append({'_id': str(p['_id']),'name': p['name'], 'climate': p['climate'], 'terrain':p['terrain'], 'filmes': p['films']})
   return jsonify({'result': output})
 
 #GET PLANET BY ID
